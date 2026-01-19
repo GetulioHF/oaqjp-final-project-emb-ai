@@ -10,8 +10,14 @@ def emotion_detector_endpoint():
         text = data.get('text', '')
         
         if not text:
-            return jsonify({'error': 'Text parameter is required'}), 400
+            return jsonify({'error': 'Invalid text! Please try again!'}), 400
         result = emotion_detector(text)
+
+        if result['dominant_emotion'] is None:
+            return jsonify({
+                'error': 'Invalid text!'
+            }), 400
+
         formatted_response = (
             f"For the given statement, the system response is "
             f"'anger': {result['anger']}, 'disgust': {result['disgust']}, "
